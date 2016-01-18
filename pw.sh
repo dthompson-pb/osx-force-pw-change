@@ -20,8 +20,18 @@ EOF
 exit 1
 }
 
+# Function to check if users exist
+function user_check() {
+    if id -u "$1" >/dev/null 2>&1; then
+        return 0
+    else
+        echo "User $1 does not exist."
+        exit 1
+    fi
+}
+
 # Validate command line arguments
-if [[ $1== "-h" || $1 == "--help" ]]; then
+if [[ $1 == "-h" || $1 == "--help" ]]; then
     # Check for -h or --help to display usage
     usage
 elif [[ -z $1 || -z $2 ]]; then
@@ -30,6 +40,11 @@ elif [[ -z $1 || -z $2 ]]; then
     usage
 fi
 
+# Make sure given usernames actually exist
+user_check $1
+user_check $2
+
+# Set arguments to variables
 adminuser=$1
 user=$2
 

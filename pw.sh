@@ -8,9 +8,6 @@ if [[ $(uname) != "Darwin" ]]; then
     exit 1
 fi
 
-adminuser=$1
-user=$2
-
 # Usage function
 function usage() {
 cat <<EOF
@@ -24,14 +21,17 @@ exit 1
 }
 
 # Validate command line arguments
-if [[ $adminuser == "-h" || $adminuser == "--help" ]]; then
+if [[ $1== "-h" || $1 == "--help" ]]; then
     # Check for -h or --help to display usage
     usage
-elif [[ -z $adminuser || -z $user ]]; then
+elif [[ -z $1 || -z $2 ]]; then
     # Make sure both command line arguments are at least filled if first is
     # not -h or --help
     usage
 fi
+
+adminuser=$1
+user=$2
 
 # OS X specific command to force a user to change their password at next login
 pwpolicy -a $adminuser -u $user -setpolicy "newPasswordRequired=1"
